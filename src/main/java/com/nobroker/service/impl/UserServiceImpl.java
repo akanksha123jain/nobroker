@@ -21,6 +21,30 @@ public class UserServiceImpl implements UserService {
         return savedUser.getId();
     }
 
+    @Override
+    public User registerUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void verifyEmail(User user) {
+        user.setEmailVerified(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean isEmailVerified(String email) {
+        User user = userRepository.findByEmail(email);
+        return user != null && user.isEmailVerified();
+
+    }
+
+
     User mapToEntity(UserDto userDto){
         User user = modelMapper.map(userDto, User.class);
         return user;

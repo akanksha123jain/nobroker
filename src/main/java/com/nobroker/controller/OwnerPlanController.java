@@ -1,5 +1,6 @@
 package com.nobroker.controller;
 
+import com.nobroker.entity.OwnerPlans;
 import com.nobroker.payload.OwnerPlanDto;
 import com.nobroker.service.OwnerPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,29 @@ import java.util.List;
         private OwnerPlanService ownerPlanService;
 
         @PostMapping
-        public ResponseEntity<OwnerPlanDto> createOwnerPlan(@RequestBody OwnerPlanDto ownerPlanDto){
+        public ResponseEntity<OwnerPlanDto> createOwnerPlan(@RequestBody OwnerPlanDto ownerPlanDto) {
             OwnerPlanDto dto = ownerPlanService.createOwnerPlans(ownerPlanDto);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         }
-        @GetMapping
-        public List<OwnerPlanDto> getAllOwnerPlans(){
-            return ownerPlanService.getAllOwnerPlans();
 
+
+
+
+        // http://localhost:8080/api/ownerPlan/subscribe?userId=&duration=
+        @PostMapping("/subscribe")
+        public OwnerPlans subscribePlan(@RequestParam long userId, @RequestParam int duration) {
+            return ownerPlanService.subscribePlan(userId, duration);
         }
+        @GetMapping
+        public List<OwnerPlanDto> getAllOwnarPlans(){
+            List<OwnerPlanDto> allOwnerPlans= ownerPlanService.getAllOwnerPlans();
+            return allOwnerPlans;
+        }
+
+//        @GetMapping("/check-expiration/{planId}")
+//        public boolean checkExpiration(@PathVariable("planId") long planId) {
+//            return ownerPlanService.checkExpiration(planId);
+//        }
+
     }
 
